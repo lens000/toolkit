@@ -88,6 +88,45 @@ def bezierCurve(bezierInfo, t=None, segNum=3):
     pntLst = np.array(pntLst)
     return pntLst
 
+def decasteljaus(curveInfo, t):
+
+    pntLst = curveInfo.controlPnt
+    n = curveInfo.degree
+
+    if n+1 != len(pntLst):
+        return None
+
+    if t < 0:
+        return None
+
+    tempPnt = np.array([])
+
+    firstDer = None
+    pnt = None
+
+    for i in range(n):
+        if i == n-1:
+            firstDer_x = pntLst[1].x - pntLst[0].x
+            firstDer_y = pntLst[1].y - pntLst[0].y
+            firstDer = point(firstDer_x, firstDer_y)
+
+            x = t * pntLst[1].x + (1 - t) * pntLst[0].x
+            y = t * pntLst[1].y + (1 - t) * pntLst[0].y
+            pnt = point(x, y)
+        else:
+            for j in range(len(pntLst)-1):
+                x = t * pntLst[j+1].x + (1-t) * pntLst[j].x
+                y = t * pntLst[j+1].y + (1-t) * pntLst[j].y
+
+                pnt = point(x,y)
+                tempPnt = np.append(tempPnt, pnt)
+
+            pntLst = tempPnt
+            tempPnt = np.array([])
+
+    return pnt, firstDer
+
+
 if __name__ == "__main__":
     pnt1 = point(0, 0)
     pnt2 = point(0, 50)
@@ -97,4 +136,7 @@ if __name__ == "__main__":
 
     curveInfo = bezier(2, controlPnt)
     bPnts = bezierCurve(curveInfo, None, 5)
-    print(bPnts)
+
+    pnt = decasteljaus(curveInfo, 0.3)
+    print(pnt[0].x, pnt[0].y)
+    print(pnt[1].x, pnt[1].y)
