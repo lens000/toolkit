@@ -108,6 +108,9 @@ def decasteljaus(curveInfo, t):
         if i == n-1:
             firstDer_x = pntLst[1].x - pntLst[0].x
             firstDer_y = pntLst[1].y - pntLst[0].y
+
+            firstDer_x = firstDer_x * n
+            firstDer_y = firstDer_y * n
             firstDer = point(firstDer_x, firstDer_y)
 
             x = t * pntLst[1].x + (1 - t) * pntLst[0].x

@@ -26,8 +26,7 @@ def bezierLengthFun(t, curveInfo):
     dxt = derivePnt.x
     dyt = derivePnt.y
     s = np.sqrt(dxt*dxt + dyt*dyt)
-    # I don't know why multiply degree
-    return s * curveInfo.degree
+    return s
 
 def bezierLength(curveInfo):
 
@@ -37,16 +36,32 @@ def bezierLength(curveInfo):
 
     return s
 
+def test():
+    pnt1 = point(0,0)
+    pnt2 = point(0,100)
+    pnt3 = point(100,100)
+
+    controlPnt = np.array([pnt1, pnt2, pnt3])
+
+    curveInfo = bezier(2, controlPnt)
+
+    t = lambda x: 200*np.sqrt(1 - 2* x + 2*x*x)
+    s = gauss_integral(0, 1, t, 4)
+    return s
+
 if __name__ == "__main__":
 
-    pnt1 = point(-165.7819, 54.22869)
-    pnt2 = point(-118.0437, 148.7052)
-    pnt3 = point(-55.30936, 64.97601)
-    pnt4 = point(1.379291, 131.9593)
+    pnt1 = point(0, 0)
+    pnt2 = point(0, 100)
+    pnt3 = point(100,100)
+    pnt4 = point(100, 0)
 
     controlPnt = np.array([pnt1, pnt2, pnt3, pnt4])
 
     curveInfo = bezier(3, controlPnt)
 
     s = bezierLength(curveInfo)
+    print(s)
+
+    s = test()
     print(s)
