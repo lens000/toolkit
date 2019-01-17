@@ -104,6 +104,12 @@ def decasteljaus(curveInfo, t):
     firstDer = None
     pnt = None
 
+    firstCurve = np.array([])
+    secondCurve = np.array([])
+
+    firstCurve = np.append(firstCurve, pntLst[0])
+    secondCurve = np.append(secondCurve, pntLst[len(pntLst) - 1])
+
     for i in range(n):
         if i == n-1:
             firstDer_x = pntLst[1].x - pntLst[0].x
@@ -116,6 +122,9 @@ def decasteljaus(curveInfo, t):
             x = t * pntLst[1].x + (1 - t) * pntLst[0].x
             y = t * pntLst[1].y + (1 - t) * pntLst[0].y
             pnt = point(x, y)
+
+            firstCurve = np.append(firstCurve, pnt)
+            secondCurve = np.append(secondCurve, pnt)
         else:
             for j in range(len(pntLst)-1):
                 x = t * pntLst[j+1].x + (1-t) * pntLst[j].x
@@ -124,22 +133,30 @@ def decasteljaus(curveInfo, t):
                 pnt = point(x,y)
                 tempPnt = np.append(tempPnt, pnt)
 
+                if j == 0:
+                    firstCurve = np.append(firstCurve, pnt)
+
+                if j == len(pntLst)-2:
+                    secondCurve = np.append(secondCurve, pnt)
+
             pntLst = tempPnt
             tempPnt = np.array([])
 
-    return pnt, firstDer
+    secondCurve = secondCurve[::-1]
+    return pnt, firstDer,None,firstCurve, secondCurve
 
 
 if __name__ == "__main__":
     pnt1 = point(0, 0)
-    pnt2 = point(0, 50)
-    pnt3 = point(50, 50)
+    pnt2 = point(0, 100)
+    pnt3 = point(100, 100)
+    pnt4 = point(100, 0)
 
-    controlPnt = np.array([pnt1, pnt2, pnt3])
+    controlPnt = np.array([pnt1, pnt2, pnt3, pnt4])
 
-    curveInfo = bezier(2, controlPnt)
+    curveInfo = bezier(3, controlPnt)
     bPnts = bezierCurve(curveInfo, None, 5)
 
-    pnt = decasteljaus(curveInfo, 0.3)
+    pnt,_,_,firstCrv,secondCrv = decasteljaus(curveInfo, 0.5)
     print(pnt[0].x, pnt[0].y)
     print(pnt[1].x, pnt[1].y)
