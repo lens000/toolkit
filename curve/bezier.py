@@ -110,6 +110,7 @@ def decasteljaus(curveInfo, t):
     firstCurve = np.append(firstCurve, pntLst[0])
     secondCurve = np.append(secondCurve, pntLst[len(pntLst) - 1])
 
+    secondDer = None
     for i in range(n):
         if i == n-1:
             firstDer_x = pntLst[1].x - pntLst[0].x
@@ -126,6 +127,15 @@ def decasteljaus(curveInfo, t):
             firstCurve = np.append(firstCurve, pnt)
             secondCurve = np.append(secondCurve, pnt)
         else:
+            if n >= 2 and i == n - 2:
+                secondDer_x = pntLst[2].x - 2 * pntLst[1].x + pntLst[0].x
+                secondDer_y = pntLst[2].y - 2 * pntLst[1].y + pntLst[0].y
+
+                secondDer_x = n * (n -1) * secondDer_x
+                secondDer_y = n * (n -1) * secondDer_y
+
+                secondDer = point(secondDer_x, secondDer_y)
+
             for j in range(len(pntLst)-1):
                 x = t * pntLst[j+1].x + (1-t) * pntLst[j].x
                 y = t * pntLst[j+1].y + (1-t) * pntLst[j].y
@@ -143,7 +153,8 @@ def decasteljaus(curveInfo, t):
             tempPnt = np.array([])
 
     secondCurve = secondCurve[::-1]
-    return pnt, firstDer,None,firstCurve, secondCurve
+
+    return pnt, firstDer,secondDer,firstCurve, secondCurve
 
 
 if __name__ == "__main__":
@@ -157,6 +168,5 @@ if __name__ == "__main__":
     curveInfo = bezier(3, controlPnt)
     bPnts = bezierCurve(curveInfo, None, 5)
 
-    pnt,_,_,firstCrv,secondCrv = decasteljaus(curveInfo, 0.5)
-    print(pnt[0].x, pnt[0].y)
-    print(pnt[1].x, pnt[1].y)
+    pnt,firstDer,secondDer,firstCrv,secondCrv = decasteljaus(curveInfo, 0.5)
+    print(pnt)
