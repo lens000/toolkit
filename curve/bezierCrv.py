@@ -3,7 +3,7 @@
 # @Time    : 1/11/2019 12:46 AM
 # @Author  : Lens
 # @Version : 3.7
-# @File    : bezier.py
+# @File    : bezierCrv.py
 # @Software: PyCharm
 
 

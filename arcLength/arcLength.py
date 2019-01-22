@@ -9,7 +9,7 @@
 
 import numpy as np
 from integral.gauss_integral import gauss_integral
-from curve.bezier import decasteljaus, bezier,point
+from curve.bezierCrv import decasteljaus, bezier,point
 from functools import partial
 
 def arcLength(x):
