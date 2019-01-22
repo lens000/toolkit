@@ -193,6 +193,27 @@ def extendBezierCrv(curveInfo, t):
 
     return extendCrv
 
+def upgradeBezierDegree(curveInfo):
+
+    pntLst = curveInfo.controlPnt
+    degree = curveInfo.degree
+
+    crvPntLst = np.array([])
+    crvPntLst = np.append(crvPntLst, pntLst[0])
+
+    for i in range(len(pntLst) - 1):
+        alpha = (i+1) / (degree + 1)
+        x = (pntLst[i].x * alpha + pntLst[i + 1].x) / (1 + alpha)
+        y = (pntLst[i].y * alpha + pntLst[i + 1].y) / (1 + alpha)
+
+        pnt = point(x, y)
+        crvPntLst = np.append(crvPntLst, pnt)
+
+    crvPntLst = np.append(crvPntLst, pntLst[len(pntLst) - 1])
+
+    newCrveInfo = nurbCurve(crvPntLst, degree + 1)
+    return newCrveInfo
+
 if __name__ == "__main__":
     pnt1 = point(0, 0)
     pnt2 = point(0, 100)
@@ -208,3 +229,6 @@ if __name__ == "__main__":
 
     extendCrv = extendBezierCrv(curveInfo, -1.5)
     print(extendCrv)
+
+    upgradeCrv = upgradeBezierDegree(curveInfo)
+    print(upgradeCrv)
