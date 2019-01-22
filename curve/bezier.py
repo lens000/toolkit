@@ -156,6 +156,42 @@ def decasteljaus(curveInfo, t):
 
     return pnt, firstDer,secondDer,firstCurve, secondCurve
 
+def extendBezierCrv(curveInfo, t):
+
+    pntLst = curveInfo.controlPnt
+
+    if t < 0:
+        pntLst = pntLst[::-1]
+        t = np.fabs(t)
+
+    degree = curveInfo.degree
+
+    extendCrv = np.array([])
+
+    if degree+1 != len(pntLst):
+        return None
+
+    for i in range(degree):
+        if i == 0:
+            x = pntLst[0].x
+            y = pntLst[0].y
+            pnt = point(x, y)
+            extendCrv = np.append(extendCrv, pnt)
+        tempPnt = np.array([])
+
+        for j in range(len(pntLst) - 1):
+            x =  pntLst[j].x + 1 / (t - 1) *(pntLst[j+1].x - pntLst[j].x)
+            y =  pntLst[j].y + 1 / (t - 1) *(pntLst[j+1].y - pntLst[j].y)
+
+            pnt = point(x, y)
+            tempPnt = np.append(tempPnt, pnt)
+
+            if j == 0:
+                extendCrv = np.append(extendCrv, pnt)
+
+        pntLst = tempPnt
+
+    return extendCrv
 
 if __name__ == "__main__":
     pnt1 = point(0, 0)
@@ -166,7 +202,9 @@ if __name__ == "__main__":
     controlPnt = np.array([pnt1, pnt2, pnt3, pnt4])
 
     curveInfo = bezier(3, controlPnt)
-    bPnts = bezierCurve(curveInfo, None, 5)
 
-    pnt,firstDer,secondDer,firstCrv,secondCrv = decasteljaus(curveInfo, 0.5)
-    print(pnt)
+    extendCrv = extendBezierCrv(curveInfo, 1.5)
+    print(extendCrv)
+
+    extendCrv = extendBezierCrv(curveInfo, -1.5)
+    print(extendCrv)
