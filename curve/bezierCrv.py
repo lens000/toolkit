@@ -9,16 +9,7 @@
 
 import numpy as np
 
-class point(object):
-    def __init__(self, x, y):
-        self.x = x
-        self.y = y
-
-class nurbCurve(object):
-    def __init__(self, controlPnt, degree):
-        self.degree = degree
-        self.controlPnt = controlPnt
-        self.curveType = None
+from curve.curvInfo import point, nurbCurve
 
 
 def fac(n):
