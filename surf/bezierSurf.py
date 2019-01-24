@@ -7,7 +7,7 @@
 # @Software: PyCharm
 
 import numpy as np
-from curve.surfInfo import nurbSurf, point, nurbCurve
+from surf.surfInfo import nurbSurf, point, nurbCurve
 from curve.bezier3dCrv import bezier3dCrv
 
 def bezierSurf(srf, ut, vt):
